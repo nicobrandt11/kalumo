@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Te invitaron a un grupo · Kalumo</title>
+<meta name="description" content="Sumate al grupo en Kalumo para dividir gastos.">
+<meta property="og:title" content="Te invitaron a un grupo en Kalumo">
+<meta property="og:description" content="Tocá para sumarte y dividir los gastos.">
+<meta name="theme-color" content="#16181b">
+<link rel="icon" href="../icono.png">
+<link rel="apple-touch-icon" href="../icono.png">
+<style>
+  :root { --fondo: #16181b; --caja: #22252a; --texto: #f4f5f2; --gris: #9aa0a6; --lima: #c6f432; --tinta: #16181b; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--fondo); color: var(--texto); }
+  body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "Helvetica Neue", sans-serif;
+         min-height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 24px 16px; }
+  main { width: 100%; max-width: 380px; text-align: center; }
+  .logo { width: 72px; height: 72px; border-radius: 18px; display: block; margin: 0 auto 18px; }
+  h1 { font-size: 24px; margin: 0 0 6px; font-weight: 800; }
+  p { color: var(--gris); font-size: 16px; line-height: 1.45; margin: 0; }
+  .codigo { background: var(--caja); border-radius: 20px; padding: 18px 12px; margin: 24px 0 18px; }
+  .codigo small { display: block; color: var(--gris); font-size: 13px; margin-bottom: 6px; }
+  .codigo b { font: 800 40px/1 ui-monospace, "SF Mono", Menlo, monospace; letter-spacing: 3px; }
+  .boton { display: block; width: 100%; border: 0; border-radius: 999px; padding: 17px; font-size: 17px; font-weight: 700;
+           text-decoration: none; cursor: pointer; font-family: inherit; }
+  .lleno { background: var(--lima); color: var(--tinta); }
+  .borde { background: transparent; color: var(--texto); box-shadow: inset 0 0 0 1.5px #3a3e44; margin-top: 10px; }
+  .nota { font-size: 14px; margin-top: 22px; }
+  .error { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <img class="logo" src="../icono.png" alt="Kalumo">
+  <div id="invitacion">
+    <h1>Te invitaron a un grupo</h1>
+    <p>Sumate en Kalumo para dividir los gastos y ver quién le debe a quién.</p>
+    <div class="codigo"><small>Código del grupo</small><b id="codigo">······</b></div>
+    <a class="boton lleno" id="abrir" href="#">Abrir en Kalumo</a>
+    <button class="boton borde" id="copiar" type="button">Copiar código</button>
+    <p class="nota">Si no se abre: en Kalumo, andá a Gastos → Grupos → Unirme e ingresá el código.</p>
+  </div>
+  <div class="error" id="error">
+    <h1>Este link está incompleto</h1>
+    <p>Pedile a quien te invitó que te lo mande de nuevo, o que te pase el código del grupo.</p>
+  </div>
+</main>
+<script>
+  // El código llega como ?c=K7MQ2P. Solo letras y números: nada más se muestra ni se usa.
+  var c = (new URLSearchParams(location.search).get("c") || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+  if (c.length !== 6) {
+    document.getElementById("invitacion").style.display = "none";
+    document.getElementById("error").style.display = "block";
+  } else {
+    var lindo = c.slice(0, 3) + "-" + c.slice(3);
+    document.getElementById("codigo").textContent = lindo;
+    document.getElementById("abrir").href = "ar.finanzas.nativa://unirse/" + c;
+    document.getElementById("copiar").onclick = function () {
+      var b = this;
+      navigator.clipboard.writeText(lindo).then(function () { b.textContent = "Copiado"; setTimeout(function () { b.textContent = "Copiar código"; }, 1500); });
+    };
+  }
+</script>
+</body>
+</html>
