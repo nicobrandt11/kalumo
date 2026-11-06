@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Kalumo · Campañas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Campañas de ofertas de Kalumo (6/11/2026). Ver lanzamiento/README.md → "Campañas".
+     Usa solo la clave publishable: los permisos los pone Supabase (solo los admins pueden crear, cambiar o borrar). -->
+<style>
+:root {
+  --fondo: #f3f4f1; --caja: #ffffff; --texto: #1d1f22; --suave: #6b6f76; --linea: #e3e4e0;
+  --acento: #c8f04b; --tinta: #1d1f22; --grafito: #24272b; --rojo: #d6453d; --azul: #3a7bd5; --ambar: #c98a12;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --fondo: #141517; --caja: #1f2124; --texto: #f1f2ef; --suave: #9a9ea5; --linea: #2f3236; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Inter, system-ui, sans-serif; background: var(--fondo); color: var(--texto); }
+button, input, select, textarea { font: inherit; color: inherit; }
+header { display: flex; align-items: center; gap: 12px; padding: 18px 24px; border-bottom: 1px solid var(--linea); background: var(--caja); position: sticky; top: 0; z-index: 5; }
+.logo { width: 34px; height: 34px; border-radius: 10px; background: var(--grafito); display: grid; place-items: center; color: var(--acento); font-weight: 900; }
+header h1 { font-size: 18px; margin: 0; font-weight: 800; letter-spacing: -.3px; }
+header .quien { margin-left: auto; color: var(--suave); font-size: 14px; display: flex; gap: 12px; align-items: center; }
+main { max-width: 1180px; margin: 0 auto; padding: 24px; }
+.btn { border: 0; border-radius: 999px; padding: 10px 18px; font-weight: 700; cursor: pointer; background: var(--grafito); color: #fff; }
+.btn.lima { background: var(--acento); color: var(--tinta); }
+.btn.borde { background: transparent; border: 1.5px solid var(--linea); color: var(--texto); }
+.btn.rojo { background: var(--rojo); color: #fff; }
+.btn.chico { padding: 6px 12px; font-size: 13px; }
+.btn:disabled { opacity: .5; cursor: default; }
+.aviso { padding: 12px 16px; border-radius: 14px; background: #fff4d6; color: #6b4b00; font-size: 14px; margin-bottom: 16px; }
+@media (prefers-color-scheme: dark) { .aviso { background: #3a2f12; color: #f3d690; } }
+.barra { display: flex; gap: 10px; align-items: center; margin-bottom: 18px; flex-wrap: wrap; }
+.barra h2 { margin: 0 auto 0 0; font-size: 26px; font-weight: 900; letter-spacing: -.6px; }
+.filtros { display: flex; gap: 6px; }
+.filtros button { border: 1px solid var(--linea); background: var(--caja); padding: 6px 12px; border-radius: 999px; cursor: pointer; font-size: 13px; font-weight: 600; }
+.filtros button.si { background: var(--grafito); color: #fff; border-color: var(--grafito); }
+.lista { display: grid; gap: 10px; }
+.fila { background: var(--caja); border: 1px solid var(--linea); border-radius: 18px; padding: 16px 18px; display: grid; grid-template-columns: 1fr auto; gap: 8px 16px; align-items: center; cursor: pointer; }
+.fila:hover { border-color: var(--suave); }
+.fila .nombre { font-weight: 800; font-size: 16px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.fila .det { color: var(--suave); font-size: 13px; }
+.fila .nums { display: flex; gap: 16px; font-size: 13px; color: var(--suave); text-align: right; }
+.fila .nums b { display: block; color: var(--texto); font-size: 17px; }
+.chip { font-size: 11px; font-weight: 800; letter-spacing: .4px; padding: 3px 8px; border-radius: 999px; text-transform: uppercase; }
+.c-borrador { background: var(--linea); color: var(--suave); }
+.c-programada { background: #dce8fb; color: var(--azul); }
+.c-curso { background: var(--acento); color: var(--tinta); }
+.c-terminada { background: transparent; border: 1px solid var(--linea); color: var(--suave); }
+.c-pausada { background: #f7e6c4; color: var(--ambar); }
+.vacio { text-align: center; color: var(--suave); padding: 50px; }
+/* Editor */
+.editor { display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start; }
+@media (max-width: 900px) { .editor { grid-template-columns: 1fr; } header { padding: 14px 16px; } main { padding: 16px; } .fila { grid-template-columns: 1fr; } .fila .nums { text-align: left; } }
+.panel { background: var(--caja); border: 1px solid var(--linea); border-radius: 20px; padding: 20px; margin-bottom: 16px; }
+.panel h3 { margin: 0 0 14px; font-size: 15px; font-weight: 800; }
+.campo { display: grid; gap: 6px; margin-bottom: 14px; }
+.campo label { font-size: 13px; font-weight: 700; }
+.campo small { color: var(--suave); font-size: 12px; }
+.campo input, .campo select, .campo textarea { width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--linea); background: var(--fondo); }
+.campo textarea { resize: vertical; min-height: 60px; }
+.dos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.marcas { display: flex; flex-wrap: wrap; gap: 8px; }
+.marcas label { display: flex; gap: 6px; align-items: center; border: 1px solid var(--linea); border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.marcas input { accent-color: var(--grafito); width: auto !important; padding: 0; }
+.error { color: var(--rojo); font-size: 13px; font-weight: 600; min-height: 18px; }
+.acciones { display: flex; gap: 10px; flex-wrap: wrap; }
+/* Vista previa */
+.previa { position: sticky; top: 90px; }
+.tel { width: 320px; height: 650px; margin: 0 auto; border-radius: 48px; background: #0d0e10; padding: 12px; box-shadow: 0 20px 50px rgba(0,0,0,.25); }
+.pantalla { height: 100%; border-radius: 38px; overflow: hidden; background: #f4f5f2; color: #1d1f22; position: relative; display: flex; flex-direction: column; padding: 44px 20px 18px; text-align: center; }
+.pantalla::before { content: ""; position: absolute; inset: 0 0 auto; height: 260px; background: radial-gradient(ellipse at top, rgba(200,240,75,.45), transparent 70%); }
+.pantalla > * { position: relative; }
+.p-x { position: absolute; top: 40px; right: 16px; width: 28px; height: 28px; border-radius: 50%; background: rgba(0,0,0,.07); display: grid; place-items: center; font-size: 13px; }
+.p-et { align-self: center; margin-top: 30px; background: #1d1f22; color: #c8f04b; font-size: 10px; font-weight: 900; letter-spacing: 1px; padding: 5px 10px; border-radius: 999px; }
+.p-tit { font-size: 25px; font-weight: 900; letter-spacing: -.6px; line-height: 1.1; margin: 14px 0 8px; }
+.p-baj { font-size: 12.5px; color: #6b6f76; line-height: 1.35; }
+.p-precio { background: #fff; border: 1px solid #e3e4e0; border-radius: 16px; padding: 12px; margin: 16px 0 12px; }
+.p-precio s { color: #6b6f76; font-size: 13px; margin-right: 6px; }
+.p-precio b { font-size: 28px; font-weight: 900; letter-spacing: -.8px; }
+.p-precio div { font-size: 11px; color: #6b6f76; font-weight: 600; }
+.p-reloj small { color: #6b6f76; font-size: 11px; font-weight: 700; }
+.p-reloj div { font-size: 22px; font-weight: 900; font-variant-numeric: tabular-nums; }
+.p-boton { margin-top: auto; background: #1d1f22; color: #fff; border-radius: 999px; padding: 13px; font-weight: 700; font-size: 14px; }
+.p-no { color: #6b6f76; font-size: 13px; font-weight: 600; margin: 9px 0 4px; }
+.p-chica { font-size: 8.5px; color: #8b8f96; line-height: 1.35; }
+.p-cartel { margin-top: 70px; background: #fff; border: 1.5px solid #c8d98f; border-radius: 18px; padding: 10px; display: flex; gap: 10px; align-items: center; text-align: left; }
+.p-cartel .pct { width: 46px; height: 46px; border-radius: 13px; background: #1d1f22; color: #fff; display: grid; place-items: center; font-weight: 900; font-size: 13px; flex: none; }
+.p-cartel .et { font-size: 8.5px; font-weight: 900; letter-spacing: .6px; }
+.p-cartel .t { font-size: 12.5px; font-weight: 700; }
+.p-cartel .r { font-size: 10.5px; color: #6b6f76; font-variant-numeric: tabular-nums; }
+.p-cajas { margin-top: 12px; display: grid; gap: 10px; }
+.p-cajas div { height: 110px; background: #fff; border-radius: 18px; border: 1px solid #e8e9e5; }
+.pestanas { display: flex; gap: 6px; justify-content: center; margin-bottom: 12px; }
+/* Login */
+.login { max-width: 380px; margin: 70px auto; }
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,.4); display: grid; place-items: center; z-index: 20; padding: 16px; }
+.modal .panel { max-width: 420px; width: 100%; }
+.btn.huella { width: 100%; display: flex; gap: 10px; align-items: center; justify-content: center; padding: 14px; }
+.btn.huella svg { width: 22px; height: 22px; }
+.separa { display: flex; align-items: center; gap: 10px; color: var(--suave); font-size: 12px; margin: 18px 0; }
+.separa::before, .separa::after { content: ""; flex: 1; height: 1px; background: var(--linea); }
+.llave { display: flex; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid var(--linea); }
+.llave:first-child { border-top: 0; }
+.llave .n { flex: 1; min-width: 0; }
+.llave .n b { display: block; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.llave .n small { color: var(--suave); font-size: 12px; }
+.llave input { flex: 1; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--linea); background: var(--fondo); }
+.oculto { display: none !important; }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">K</div>
+  <h1>Campañas</h1>
+  <div class="quien"><span id="quien"></span><button class="btn borde chico oculto" id="verLlaves">Huella y Face ID</button><button class="btn borde chico oculto" id="salir">Salir</button></div>
+</header>
+
+<main>
+  <div id="vLogin" class="login oculto">
+    <div class="panel">
+      <h3>Entrá con tu cuenta de Kalumo</h3>
+      <div id="lConHuella"><button class="btn huella" id="lHuella"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 11v3a7 7 0 0 1-1 3.6"/><path d="M8.5 9.5A3.5 3.5 0 0 1 15.5 11v2"/><path d="M15.4 16.5c-.2 1.3-.6 2.5-1.2 3.5"/><path d="M5.6 7.5A8 8 0 0 1 19.9 11v1.5"/><path d="M4.3 12a7.8 7.8 0 0 1 .3-2"/><path d="M8.5 13a10 10 0 0 1-1.7 5.3"/><path d="M19.6 16a14 14 0 0 1-.8 2.6"/><path d="M8 3.6a8.5 8.5 0 0 1 9 .7"/></svg> Entrar con huella o Face ID</button>
+      <div class="separa">o con mail y contraseña</div></div>
+      <div class="campo"><label for="lMail">Mail</label><input id="lMail" type="email" autocomplete="username"></div>
+      <div class="campo"><label for="lClave">Contraseña</label><input id="lClave" type="password" autocomplete="current-password"></div>
+      <div class="error" id="lError"></div>
+      <button class="btn lima" id="lEntrar" style="width:100%">Entrar</button>
+    </div>
+  </div>
+
+  <div id="vLista" class="oculto">
+    <div id="avisoDemo" class="aviso oculto">Modo demostración: los cambios no se guardan en ningún lado. Para usar la de verdad, armá <code>config.js</code> (ver README).</div>
+    <div id="ofrecerHuella" class="aviso oculto" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <span style="flex:1;min-width:200px"><b>¿Entrar la próxima vez con tu huella o Face ID?</b> Sin escribir la contraseña.</span>
+      <button class="btn chico" id="activarHuella">Activar</button><button class="btn borde chico" id="noHuella">Ahora no</button>
+    </div>
+    <div class="barra">
+      <h2>Campañas</h2>
+      <div class="filtros" id="filtros"></div>
+      <button class="btn lima" id="nueva">+ Nueva campaña</button>
+    </div>
+    <div class="lista" id="lista"></div>
+  </div>
+
+  <div id="vEditor" class="oculto">
+    <div class="barra">
+      <button class="btn borde chico" id="volver">← Volver</button>
+      <h2 id="eTitulo">Nueva campaña</h2>
+    </div>
+    <div class="editor">
+      <div>
+        <div class="panel">
+          <h3>Lo básico</h3>
+          <div class="campo"><label for="fNombre">Nombre interno</label><input id="fNombre" maxlength="80" placeholder="Black Friday 2026"><small>Solo lo ves vos.</small></div>
+          <div class="dos">
+            <div class="campo"><label for="fDesde">Empieza (hora de Argentina)</label><input id="fDesde" type="datetime-local"></div>
+            <div class="campo"><label for="fHasta">Termina (hora de Argentina)</label><input id="fHasta" type="datetime-local"></div>
+          </div>
+          <div class="campo"><label>A quién se le muestra</label>
+            <div class="marcas" id="fPublico"></div>
+            <small>Nunca se muestra durante la prueba gratis, ni a quien ya tiene ese plan, ni en los primeros 3 días de uso.</small>
+          </div>
+          <div class="campo" id="cMotivo"><label for="fMotivo">Solo a quien canceló la prueba diciendo…</label>
+            <select id="fMotivo"><option value="">Cualquier motivo</option><option value="caro">Me parece caro</option><option value="poco_uso">No lo usé tanto</option><option value="falta">Le falta algo</option><option value="alcanza_gratis">Me alcanza con Gratis</option><option value="otro">Otro</option></select>
+          </div>
+          <div class="campo"><label>Formato</label><div class="marcas" id="fFormatos"></div>
+            <small>La pantalla completa sale una sola vez por campaña y como mucho una por semana. El cartel se puede cerrar.</small></div>
+          <div class="campo"><label for="fPrioridad">Prioridad (0 a 100)</label><input id="fPrioridad" type="number" min="0" max="100"><small>Si dos campañas se pisan, gana la más alta.</small></div>
+        </div>
+
+        <div class="panel">
+          <h3>La oferta</h3>
+          <div class="dos">
+            <div class="campo"><label for="fProducto">Plan</label>
+              <select id="fProducto"><option value="kalumo.full.anual">Full anual</option><option value="kalumo.full.mensual">Full mensual</option><option value="kalumo.pro.anual">Pro anual</option><option value="kalumo.pro.mensual">Pro mensual</option></select></div>
+            <div class="campo"><label for="fDescuento">Descuento</label>
+              <select id="fDescuento"><option value="25">−25 %</option><option value="40">−40 %</option><option value="50">−50 %</option></select></div>
+          </div>
+          <div class="campo"><label for="fOferta">Oferta firmada de Apple (Offer ID)</label><input id="fOferta" maxlength="64" placeholder="full_anual_40">
+            <small>Para "Canceló la prueba", "Se fue" y "Tiene Pro". Se crea una sola vez en App Store Connect → la suscripción → Ofertas promocionales. Solo vale mientras la campaña esté en fecha.</small></div>
+          <div class="campo"><label for="fCodigo">Código de oferta de Apple</label><input id="fCodigo" maxlength="64" placeholder="BLACKFRIDAY26" style="text-transform:uppercase">
+            <small>Para "Nunca pagó". Crealo en App Store Connect → Códigos de oferta con <b>el mismo vencimiento</b> que esta campaña.</small></div>
+        </div>
+
+        <div class="panel">
+          <h3>Los textos</h3>
+          <div class="campo"><label for="fEtiqueta">Etiqueta</label><input id="fEtiqueta" maxlength="30" placeholder="BLACK FRIDAY"></div>
+          <div class="campo"><label for="fTitulo">Título</label><input id="fTitulo" maxlength="60"></div>
+          <div class="campo"><label for="fBajada">Bajada</label><textarea id="fBajada" maxlength="160"></textarea></div>
+          <div class="campo"><label for="fBoton">Botón</label><input id="fBoton" maxlength="40"></div>
+        </div>
+
+        <div class="panel">
+          <h3>Estado</h3>
+          <div class="campo"><select id="fEstado"><option value="borrador">Borrador (no la ve nadie)</option><option value="activa">Activa (se ve entre las fechas)</option><option value="pausada">Pausada</option></select></div>
+          <div class="error" id="fError"></div>
+          <div class="acciones">
+            <button class="btn lima" id="guardar">Guardar</button>
+            <button class="btn borde" id="duplicar">Duplicar</button>
+            <button class="btn rojo" id="borrar">Borrar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="previa">
+        <div class="pestanas"><div class="filtros" id="pVista"></div></div>
+        <div class="tel"><div class="pantalla" id="pantalla"></div></div>
+        <div class="panel" id="estad" style="margin-top:16px"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="modal oculto" id="mLlaves"><div class="panel">
+  <h3>Huella y Face ID</h3>
+  <p style="color:var(--suave);font-size:13px;margin-top:-6px">Cada compu o iPhone con el que podés entrar sin contraseña. Si usás el llavero de iCloud, la de la Mac también sirve en el iPhone.</p>
+  <div id="listaLlaves"></div>
+  <div class="error" id="llError"></div>
+  <div class="acciones" style="margin-top:8px"><button class="btn lima" id="sumarLlave">Agregar este dispositivo</button><button class="btn borde" id="cerrarLlaves">Listo</button></div>
+</div></div>
+<div class="modal oculto" id="modal"><div class="panel"><h3 id="mTit"></h3><p id="mTxt" style="color:var(--suave);font-size:14px"></p>
+  <div class="acciones"><button class="btn rojo" id="mSi"></button><button class="btn borde" id="mNo">Cancelar</button></div></div></div>
+
+<script src="config.js" onerror="window.KALUMO = null"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.min.js"></script>
+<script>
+const PUBLICOS = { nunca_pago: "Nunca pagó", cancelo_prueba: "Canceló la prueba", se_fue: "Se fue", tiene_pro: "Tiene Pro" };
+const FORMATOS = { pantalla: "Pantalla completa al abrir", cartel: "Cartel en Inicio" };
+const PRECIOS = { "kalumo.full.anual": 99.99, "kalumo.full.mensual": 9.99, "kalumo.pro.anual": 79.99, "kalumo.pro.mensual": 7.99 };
+const $ = (id) => document.getElementById(id);
+const demo = !window.KALUMO || new URLSearchParams(location.search).has("demo");
+// Passkeys (huella en la Mac, Face ID en el iPhone): en beta en Supabase desde mayo de 2026, hay que pedirlas aparte.
+const db = demo ? null : supabase.createClient(KALUMO.url, KALUMO.clave, { auth: { experimental: { passkey: true } } });
+const hayPasskey = !!window.PublicKeyCredential;
+
+let campanas = [], estadisticas = {}, filtro = "todas", actual = null, vistaPrevia = "pantalla", reloj = null;
+
+/* ── Fechas: siempre en hora de Argentina (−03:00) ── */
+const aInput = (iso) => new Date(new Date(iso).getTime() - 3 * 3600e3).toISOString().slice(0, 16);
+const deInput = (v) => new Date(v + ":00-03:00").toISOString();
+const lindo = (iso) => new Date(iso).toLocaleString("es-AR", { timeZone: "America/Argentina/Buenos_Aires", weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+function situacion(c) {
+  if (c.estado === "borrador") return ["Borrador", "c-borrador"];
+  if (c.estado === "pausada") return ["Pausada", "c-pausada"];
+  const ahora = Date.now();
+  if (ahora < Date.parse(c.desde)) return ["Programada", "c-programada"];
+  if (ahora > Date.parse(c.hasta)) return ["Terminada", "c-terminada"];
+  return ["En curso", "c-curso"];
+}
+const esc = (t) => String(t ?? "").replace(/ %/g, "\u00a0%").replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+
+/* ── Entrar ── */
+async function arrancar() {
+  if (demo) { $("avisoDemo").classList.remove("oculto"); $("quien").textContent = "Demostración"; cargarDemo(); return mostrar("vLista"); }
+  const { data: { session } } = await db.auth.getSession();
+  if (!session) return mostrar("vLogin");
+  const { data: admin } = await db.from("admins").select("usuario_id").eq("usuario_id", session.user.id).maybeSingle();
+  $("quien").textContent = session.user.email;
+  $("salir").classList.remove("oculto");
+  if (hayPasskey) $("verLlaves").classList.remove("oculto");
+  if (!admin) { mostrar("vLogin"); $("lError").textContent = "Esta cuenta no es admin. Agregala con la última línea de campanas.sql."; return; }
+  await cargar();
+  mostrar("vLista");
+  ofrecerHuella();
+}
+$("lEntrar").onclick = async () => {
+  $("lError").textContent = "";
+  const { error } = await db.auth.signInWithPassword({ email: $("lMail").value.trim(), password: $("lClave").value });
+  if (error) { $("lError").textContent = "Mail o contraseña incorrectos."; return; }
+  arrancar();
+};
+$("lClave").onkeydown = (e) => { if (e.key === "Enter") $("lEntrar").click(); };
+/* ── Huella / Face ID (passkeys) ── */
+if (!hayPasskey) $("lConHuella").classList.add("oculto");
+const cancelo = (e) => /NotAllowed|AbortError|cancel/i.test(String(e?.name ?? "") + String(e?.message ?? "") + String(e?.code ?? ""));
+const queFallo = (e) => /disabled|not enabled|passkey_disabled|feature/i.test(String(e?.message ?? "") + String(e?.code ?? ""))
+  ? "Falta prenderlo en Supabase: Authentication → Passkeys (ver docs/campanas.md)."
+  : "No se pudo. Probá de nuevo.";
+$("lHuella").onclick = async () => {
+  $("lError").textContent = "";
+  const { error } = await db.auth.signInWithPasskey();
+  if (error) { if (!cancelo(error)) $("lError").textContent = /not found|no credential|unknown/i.test(error.message) ? "Esta huella todavía no está asociada: entrá con la contraseña y activala." : queFallo(error); return; }
+  arrancar();
+};
+let llaves = [];
+async function cargarLlaves() {
+  const { data, error } = await db.auth.passkey.list();
+  if (error) { $("llError").textContent = queFallo(error); llaves = []; return false; }
+  llaves = data ?? []; return true;
+}
+function guardarLocal(k, v) { try { localStorage.setItem(k, v); } catch {} }
+function leerLocal(k) { try { return localStorage.getItem(k); } catch { return null; } }
+async function ofrecerHuella() {
+  if (!hayPasskey || leerLocal("noHuella")) return;
+  if (await cargarLlaves() && llaves.length === 0) $("ofrecerHuella").classList.remove("oculto");
+}
+async function sumarLlave() {
+  const nombre = /iPhone|iPad/.test(navigator.userAgent) ? "iPhone" : /Mac/.test(navigator.userAgent) ? "Mac" : "Este dispositivo";
+  const { data, error } = await db.auth.registerPasskey();
+  if (error) { if (!cancelo(error)) return queFallo(error); return ""; }
+  if (data?.id) await db.auth.passkey.update({ passkeyId: data.id, friendlyName: nombre });
+  return null;
+}
+$("activarHuella").onclick = async () => {
+  const mal = await sumarLlave();
+  if (mal === null) { $("ofrecerHuella").classList.add("oculto"); alert("Listo: la próxima vez entrás con tu huella o Face ID."); }
+  else if (mal) alert(mal);
+};
+$("noHuella").onclick = () => { guardarLocal("noHuella", "1"); $("ofrecerHuella").classList.add("oculto"); };
+const fecha = (iso) => new Date(iso).toLocaleDateString("es-AR", { day: "numeric", month: "long", year: "numeric" });
+function dibujarLlaves(editando = null) {
+  $("listaLlaves").innerHTML = llaves.length ? llaves.map((l) => editando === l.id
+    ? `<div class="llave"><input id="nuevoNombre" maxlength="40" value="${esc(l.friendly_name ?? "")}"><button class="btn chico" data-guardar="${l.id}">Guardar</button></div>`
+    : `<div class="llave"><div class="n"><b>${esc(l.friendly_name || "Sin nombre")}</b><small>Agregada el ${fecha(l.created_at)}</small></div>
+       <button class="btn borde chico" data-renombrar="${l.id}">Renombrar</button><button class="btn rojo chico" data-quitar="${l.id}">Quitar</button></div>`).join("")
+    : `<div style="color:var(--suave);font-size:14px;padding:8px 0">Todavía no agregaste ninguna.</div>`;
+  $("listaLlaves").querySelectorAll("[data-renombrar]").forEach((b) => (b.onclick = () => { dibujarLlaves(b.dataset.renombrar); $("nuevoNombre").focus(); }));
+  $("listaLlaves").querySelectorAll("[data-guardar]").forEach((b) => (b.onclick = async () => {
+    const { error } = await db.auth.passkey.update({ passkeyId: b.dataset.guardar, friendlyName: $("nuevoNombre").value.trim() || "Sin nombre" });
+    $("llError").textContent = error ? queFallo(error) : "";
+    await cargarLlaves(); dibujarLlaves();
+  }));
+  $("listaLlaves").querySelectorAll("[data-quitar]").forEach((b) => (b.onclick = () => {
+    const l = llaves.find((x) => x.id === b.dataset.quitar);
+    preguntar(`¿Quitar «${l.friendly_name || "Sin nombre"}»?`, "Con ese dispositivo vas a tener que volver a entrar con mail y contraseña. Tu cuenta y las campañas no se tocan.", "Quitar", async () => {
+      const { error } = await db.auth.passkey.delete({ passkeyId: l.id });
+      $("llError").textContent = error ? queFallo(error) : "";
+      await cargarLlaves(); dibujarLlaves();
+    });
+  }));
+}
+$("verLlaves").onclick = async () => { $("llError").textContent = ""; $("mLlaves").classList.remove("oculto"); await cargarLlaves(); dibujarLlaves(); };
+$("cerrarLlaves").onclick = () => $("mLlaves").classList.add("oculto");
+$("sumarLlave").onclick = async () => { const mal = await sumarLlave(); $("llError").textContent = mal ?? ""; if (mal === null) { $("ofrecerHuella").classList.add("oculto"); await cargarLlaves(); dibujarLlaves(); } };
+
+$("salir").onclick = async () => { await db.auth.signOut(); location.reload(); };
+
+function mostrar(v) { for (const x of ["vLogin", "vLista", "vEditor"]) $(x).classList.toggle("oculto", x !== v); if (v === "vLista") dibujarLista(); }
+
+/* ── Datos ── */
+async function cargar() {
+  const [{ data, error }, { data: est }] = await Promise.all([
+    db.from("campanas").select("*").order("desde"),
+    db.rpc("estadisticas_campanas"),
+  ]);
+  if (error) { alert("No se pudieron cargar: " + error.message); return; }
+  campanas = data;
+  estadisticas = Object.fromEntries((est ?? []).map((e) => [e.campana_id, e]));
+}
+function cargarDemo() {
+  const d = (s) => new Date(s).toISOString();
+  const base = { motivo: null, producto: "kalumo.full.anual", oferta_id: "full_anual_40", codigo: null, formatos: ["pantalla", "cartel"], prioridad: 80 };
+  campanas = [
+    { ...base, id: "1", nombre: "Lanzamiento", estado: "activa", desde: d(Date.now() - 864e5), hasta: d(Date.now() + 2.2 * 864e5), publico: ["nunca_pago", "cancelo_prueba"], descuento: 40, codigo: "LANZAMIENTO", etiqueta: "LANZAMIENTO", titulo: "Full por un año, 40 % menos", bajada: "Para festejar que salimos. Solo esta semana.", boton: "Quiero el Full" },
+    { ...base, id: "2", nombre: "Black Friday 2026", estado: "borrador", desde: d("2026-11-27T00:00-03:00"), hasta: d("2026-11-30T23:59-03:00"), publico: ["nunca_pago", "cancelo_prueba", "se_fue", "tiene_pro"], descuento: 40, etiqueta: "BLACK FRIDAY", titulo: "Full por un año, 40 % menos", bajada: "Todo Kalumo: fotos y PDF, IA más inteligente y noticias. Solo hasta el lunes.", boton: "Quiero el Full" },
+    { ...base, id: "3", nombre: "Te entendemos (siempre)", estado: "activa", desde: d("2026-11-01T00:00-03:00"), hasta: d("2030-12-31T23:59-03:00"), publico: ["cancelo_prueba"], motivo: "caro", descuento: 40, formatos: ["pantalla"], etiqueta: "SOLO PARA VOS", titulo: "Nos dijiste que era caro", bajada: "Por eso: Full anual con 40 % menos el primer año. Esta oferta es una sola vez.", boton: "Probar con descuento", prioridad: 10 },
+  ];
+  estadisticas = { 1: { vieron: 1240, tocaron: 186, cerraron: 702, compraron: 41 }, 3: { vieron: 88, tocaron: 21, cerraron: 40, compraron: 9 } };
+}
+
+/* ── Lista ── */
+const FILTROS = { todas: "Todas", curso: "En curso", programada: "Programadas", borrador: "Borradores", terminada: "Terminadas" };
+function dibujarLista() {
+  $("filtros").innerHTML = Object.entries(FILTROS).map(([k, t]) => `<button data-f="${k}" class="${k === filtro ? "si" : ""}">${t}</button>`).join("");
+  $("filtros").querySelectorAll("button").forEach((b) => (b.onclick = () => { filtro = b.dataset.f; dibujarLista(); }));
+  const lista = campanas.filter((c) => filtro === "todas" || situacion(c)[1] === "c-" + filtro);
+  $("lista").innerHTML = lista.length ? lista.map((c) => {
+    const [txt, cls] = situacion(c), e = estadisticas[c.id] ?? {};
+    const conv = e.vieron ? ((100 * e.compraron) / e.vieron).toFixed(1).replace(".", ",") + " %" : "—";
+    return `<div class="fila" data-id="${c.id}">
+      <div><div class="nombre">${esc(c.nombre)} <span class="chip ${cls}">${txt}</span></div>
+      <div class="det">${lindo(c.desde)} → ${lindo(c.hasta)} · −${c.descuento} % ${c.producto.includes("full") ? "Full" : "Pro"} ${c.producto.endsWith("anual") ? "anual" : "mensual"} · ${c.publico.map((p) => PUBLICOS[p]).join(", ") || "sin público"}</div></div>
+      <div class="nums"><span><b>${e.vieron ?? 0}</b>vieron</span><span><b>${e.tocaron ?? 0}</b>tocaron</span><span><b>${e.compraron ?? 0}</b>compraron</span><span><b>${conv}</b>compra</span></div></div>`;
+  }).join("") : `<div class="vacio">No hay campañas acá.</div>`;
+  $("lista").querySelectorAll(".fila").forEach((f) => (f.onclick = () => abrir(campanas.find((c) => c.id === f.dataset.id))));
+}
+
+/* ── Editor ── */
+function nueva() {
+  const manana = new Date(Date.now() + 864e5); manana.setUTCHours(3, 0, 0, 0);
+  return { id: null, nombre: "", estado: "borrador", desde: manana.toISOString(), hasta: new Date(manana.getTime() + 4 * 864e5 - 6e4).toISOString(),
+    publico: ["nunca_pago", "cancelo_prueba", "se_fue"], motivo: null, producto: "kalumo.full.anual", descuento: 40, oferta_id: "full_anual_40", codigo: null,
+    formatos: ["pantalla", "cartel"], etiqueta: "", titulo: "", bajada: "", boton: "Quiero el Full", prioridad: 50 };
+}
+function marcas(div, opciones, elegidas) {
+  $(div).innerHTML = Object.entries(opciones).map(([k, t]) => `<label><input type="checkbox" value="${k}" ${elegidas.includes(k) ? "checked" : ""}> ${t}</label>`).join("");
+}
+const marcadas = (div) => [...$(div).querySelectorAll("input:checked")].map((i) => i.value);
+
+function abrir(c) {
+  actual = c;
+  $("eTitulo").textContent = c.id ? c.nombre : "Nueva campaña";
+  $("fNombre").value = c.nombre; $("fDesde").value = aInput(c.desde); $("fHasta").value = aInput(c.hasta);
+  marcas("fPublico", PUBLICOS, c.publico); marcas("fFormatos", FORMATOS, c.formatos);
+  $("fMotivo").value = c.motivo ?? ""; $("fPrioridad").value = c.prioridad; $("fProducto").value = c.producto;
+  $("fDescuento").value = String(c.descuento); $("fOferta").value = c.oferta_id ?? ""; $("fCodigo").value = c.codigo ?? "";
+  $("fEtiqueta").value = c.etiqueta; $("fTitulo").value = c.titulo; $("fBajada").value = c.bajada; $("fBoton").value = c.boton;
+  $("fEstado").value = c.estado; $("fError").textContent = "";
+  $("duplicar").classList.toggle("oculto", !c.id); $("borrar").classList.toggle("oculto", !c.id);
+  dibujarEstad(); previa(); mostrar("vEditor");
+  document.querySelectorAll("#vEditor input, #vEditor select, #vEditor textarea").forEach((x) => (x.oninput = x.onchange = previa));
+}
+function leer() {
+  return { nombre: $("fNombre").value.trim(), estado: $("fEstado").value, desde: deInput($("fDesde").value), hasta: deInput($("fHasta").value),
+    publico: marcadas("fPublico"), motivo: $("fMotivo").value || null, producto: $("fProducto").value, descuento: +$("fDescuento").value,
+    oferta_id: $("fOferta").value.trim() || null, codigo: $("fCodigo").value.trim().toUpperCase() || null, formatos: marcadas("fFormatos"),
+    etiqueta: $("fEtiqueta").value.trim(), titulo: $("fTitulo").value.trim(), bajada: $("fBajada").value.trim(), boton: $("fBoton").value.trim(),
+    prioridad: Math.max(0, Math.min(100, +$("fPrioridad").value || 0)) };
+}
+function revisar(c) {
+  if (!c.nombre) return "Ponele un nombre.";
+  if (!$("fDesde").value || !$("fHasta").value || Date.parse(c.hasta) <= Date.parse(c.desde)) return "La fecha de fin tiene que ser después del comienzo.";
+  if (!c.formatos.length) return "Elegí al menos un formato.";
+  if (c.codigo && !/^[A-Z0-9]+$/.test(c.codigo)) return "El código va solo con letras y números, sin espacios.";
+  if (c.estado === "activa") {
+    if (!c.publico.length) return "Para activarla, elegí a quién se le muestra.";
+    if (!c.titulo || !c.boton) return "Para activarla, completá el título y el botón.";
+    if (c.publico.includes("nunca_pago") && !c.codigo) return 'Para "Nunca pagó" hace falta el código de oferta de Apple.';
+    if (c.publico.some((p) => p !== "nunca_pago") && !c.oferta_id) return "Para los que ya probaron o pagaron hace falta la oferta firmada (Offer ID).";
+  }
+  return null;
+}
+$("guardar").onclick = async () => {
+  const c = leer(), mal = revisar(c);
+  $("fError").textContent = mal ?? "";
+  if (mal) return;
+  if (demo) {
+    if (actual.id) Object.assign(actual, c); else campanas.push({ ...c, id: String(Date.now()) });
+    return mostrar("vLista");
+  }
+  $("guardar").disabled = true;
+  const r = actual.id ? await db.from("campanas").update(c).eq("id", actual.id) : await db.from("campanas").insert(c);
+  $("guardar").disabled = false;
+  if (r.error) { $("fError").textContent = r.error.code === "23505" ? "Ya hay una campaña con ese nombre." : "No se pudo guardar: " + r.error.message; return; }
+  await cargar(); mostrar("vLista");
+};
+$("duplicar").onclick = () => abrir({ ...leer(), id: null, nombre: leer().nombre + " (copia)", estado: "borrador" });
+$("borrar").onclick = () => preguntar(`¿Borrar «${actual.nombre}»?`, "Se borra la campaña y sus estadísticas. No se puede deshacer. Si alguien ya compró con la oferta, su compra sigue igual.", "Borrar", async () => {
+  if (demo) campanas = campanas.filter((c) => c !== actual);
+  else { const { error } = await db.from("campanas").delete().eq("id", actual.id); if (error) return alert(error.message); await cargar(); }
+  mostrar("vLista");
+});
+$("nueva").onclick = () => abrir(nueva());
+$("volver").onclick = () => mostrar("vLista");
+
+function preguntar(t, d, boton, si) {
+  $("mTit").textContent = t; $("mTxt").textContent = d; $("mSi").textContent = boton; $("modal").classList.remove("oculto");
+  $("mSi").onclick = () => { $("modal").classList.add("oculto"); si(); };
+  $("mNo").onclick = () => $("modal").classList.add("oculto");
+}
+
+function dibujarEstad() {
+  const e = estadisticas[actual.id];
+  if (!actual.id) { $("estad").innerHTML = "<h3>Resultados</h3><div class='det' style='color:var(--suave);font-size:13px'>Aparecen cuando la gente la empiece a ver.</div>"; return; }
+  const v = e?.vieron ?? 0, pct = (n) => (v ? ((100 * n) / v).toFixed(1).replace(".", ",") + " %" : "—");
+  $("estad").innerHTML = `<h3>Resultados</h3>
+    <div class="fila" style="cursor:default;grid-template-columns:1fr"><div class="nums" style="justify-content:space-between;text-align:left">
+    <span><b>${v}</b>vieron</span><span><b>${e?.tocaron ?? 0}</b>tocaron · ${pct(e?.tocaron ?? 0)}</span><span><b>${e?.compraron ?? 0}</b>compraron · ${pct(e?.compraron ?? 0)}</span></div></div>
+    <div style="color:var(--suave);font-size:12px;margin-top:8px">${e?.cerraron ?? 0} cerraron el cartel o la pantalla. Cada persona cuenta una vez.</div>`;
+}
+
+/* ── Vista previa del iPhone ── */
+const plata = (n) => "US$ " + n.toFixed(2).replace(".", ",");
+const regresiva = (hasta) => {
+  let s = Math.max(0, Math.floor((Date.parse(hasta) - Date.now()) / 1000));
+  const d = Math.floor(s / 86400); s %= 86400;
+  const r = [Math.floor(s / 3600), Math.floor((s % 3600) / 60), s % 60].map((n) => String(n).padStart(2, "0")).join(":");
+  return d ? `${d} d ${r}` : r;
+};
+function previa() {
+  if (!$("fDesde").value || !$("fHasta").value) return;
+  const c = leer(), normal = PRECIOS[c.producto], oferta = normal * (1 - c.descuento / 100);
+  const anual = c.producto.endsWith("anual"), plan = c.producto.includes("full") ? "Full" : "Pro";
+  // Mientras no empezó, la cuenta regresiva muestra la duración completa.
+  const fin = Date.now() < Date.parse(c.desde) ? new Date(Date.now() + Date.parse(c.hasta) - Date.parse(c.desde)).toISOString() : c.hasta;
+  $("pVista").innerHTML = Object.entries(FORMATOS).map(([k, t]) => `<button data-v="${k}" class="${k === vistaPrevia ? "si" : ""}">${k === "pantalla" ? "Pantalla" : "Cartel"}</button>`).join("");
+  $("pVista").querySelectorAll("button").forEach((b) => (b.onclick = () => { vistaPrevia = b.dataset.v; previa(); }));
+  $("pantalla").innerHTML = vistaPrevia === "pantalla" ? `
+    <div class="p-x">✕</div>
+    ${c.etiqueta ? `<div class="p-et">${esc(c.etiqueta)}</div>` : '<div style="height:40px"></div>'}
+    <div class="p-tit">${esc(c.titulo) || "Título"}</div>
+    <div class="p-baj">${esc(c.bajada)}</div>
+    <div class="p-precio"><s>${plata(normal)}</s><b>${plata(oferta)}</b><div>${plan} ${anual ? "por el primer año" : "el primer mes"}</div></div>
+    <div class="p-reloj"><small>La oferta termina en</small><div data-fin="${fin}">${regresiva(fin)}</div></div>
+    <div class="p-boton">${esc(c.boton) || "Botón"}</div><div class="p-no">Ahora no</div>
+    <div class="p-chica">Se cobra ${plata(oferta)} por ${anual ? "el primer año" : "el primer mes"}. Después se renueva sola a ${plata(normal)} ${anual ? "por año" : "por mes"} salvo que la canceles al menos 24 horas antes…</div>` : `
+    <div style="text-align:left;font-weight:900;font-size:22px">Kalumo</div>
+    <div class="p-cartel"><div class="pct">−${c.descuento}%</div><div style="flex:1">
+      ${c.etiqueta ? `<div class="et">${esc(c.etiqueta)}</div>` : ""}<div class="t">${esc(c.titulo) || "Título"}</div>
+      <div class="r">Termina en <span data-fin="${fin}">${regresiva(fin)}</span></div></div><span style="color:#8b8f96">✕</span></div>
+    <div class="p-cajas"><div></div><div></div><div></div></div>`;
+  clearInterval(reloj);
+  reloj = setInterval(() => document.querySelectorAll("[data-fin]").forEach((x) => (x.textContent = regresiva(x.dataset.fin))), 1000);
+}
+
+arrancar();
+</script>
+</body>
+</html>
